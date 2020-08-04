@@ -18,8 +18,8 @@ def minutes_report(face_count, blink_count, clk_count):
 
 # ビデオの起動と、カスケード分類器の読み込み。
 cap = cv2.VideoCapture(1)
-cascade = cv2.CascadeClassifier('haarcascade_frontalface_default.xml')
-face_parts_cascade = dlib.shape_predictor('shape_predictor_68_face_landmarks.dat')
+cascade = cv2.CascadeClassifier('data/haarcascade_frontalface_default.xml')
+face_parts_cascade = dlib.shape_predictor('data/shape_predictor_68_face_landmarks.dat')
 
 # もろもろの変数定義
 face_count = 0
@@ -28,7 +28,7 @@ clk_count = 0
 not_blinking_time = 0
 report_flag = 0
 clk = 0.05 # clk second
-report_cycle = 60 # second for 1 report 
+report_cycle = 5 # second for 1 report 
 
 while True:
     time.sleep(clk)
@@ -50,12 +50,15 @@ while True:
         face_count += 1
 
         x, y, w, h = cascade_faces[0, :]
-        cv2.rectangle(bgr, (x, y), (x+w, y+h), (255, 0, 0), 2)
+        # cv2.rectangle(bgr, (x, y), (x+w, y+h), (255, 0, 0), 2)
 
         face = dlib.rectangle(x, y, x + w, y + h)
         face_parts = face_parts_cascade(gray, face)
         face_parts = face_utils.shape_to_np(face_parts)
         
+        for (x, y) in face_parts: #顔全体の68箇所のランドマークをプロット
+            cv2.circle(bgr, (x, y), 1, (255, 255, 255), -1)
+
         left_eye_ear = calc_ear(face_parts[42:48])
         cv2.putText(bgr, "left eye EAR:{} ".format(round(left_eye_ear, 3)), 
             (10, 100), cv2.FONT_HERSHEY_PLAIN, 1, (0, 0, 255), 1, cv2.LINE_AA)

@@ -30,8 +30,8 @@ def minutes_report(face_count, blink_count, clk_count):
 
 # ビデオの起動と、カスケード分類器の読み込み。
 cap = cv2.VideoCapture(1)
-cascade = cv2.CascadeClassifier('haarcascade_frontalface_default.xml')
-eye_cascade = cv2.CascadeClassifier('haarcascade_eye_tree_eyeglasses.xml')
+cascade = cv2.CascadeClassifier('data/haarcascade_frontalface_default.xml')
+eye_cascade = cv2.CascadeClassifier('data/haarcascade_eye_tree_eyeglasses.xml')
 
 # Faceクラスのfaceを生成。
 face = Face(cap.get(cv2.CAP_PROP_FRAME_WIDTH), cap.get(cv2.CAP_PROP_FRAME_HEIGHT))
